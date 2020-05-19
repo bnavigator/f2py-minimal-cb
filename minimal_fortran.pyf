@@ -1,0 +1,29 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module xerbla__user__routines 
+    interface xerbla_user_interface 
+        subroutine python_callback(srname,info) ! in :minimal_fortran:XERBLA.f:xerbla:unknown_interface
+            intent(callback,hide) python_callback
+            character*(*) :: srname
+            integer :: info
+        end subroutine python_callback
+    end interface xerbla_user_interface
+end python module xerbla__user__routines
+python module minimal_fortran ! in 
+    interface  ! in :minimal_fortran
+        subroutine xerbla(srname,info) ! in :minimal_fortran:XERBLA.f
+            use xerbla__user__routines
+            character*(*) :: srname
+            integer :: info
+            intent(callback) python_callback
+            external python_callback
+        end subroutine xerbla
+        subroutine fortran_caller(a1) ! in :minimal_fortran:FORTRAN_CALLER.f
+            integer :: a1
+        end subroutine fortran_caller
+    end interface 
+end python module minimal_fortran
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
