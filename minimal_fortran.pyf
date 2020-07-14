@@ -13,13 +13,16 @@ end python module xerbla__user__routines
 python module minimal_fortran ! in 
     interface  ! in :minimal_fortran
         subroutine xerbla(srname,info) ! in :minimal_fortran:XERBLA.f
-            use xerbla__user__routines
+            use xerbla__user__routines, python_callback=>python_callback
             character*(*) :: srname
             integer :: info
             intent(callback) python_callback
             external python_callback
         end subroutine xerbla
         subroutine fortran_caller(a1) ! in :minimal_fortran:FORTRAN_CALLER.f
+            use xerbla__user__routines, python_callback=>python_callback
+            intent(callback, hide) python_callback
+            external python_callback
             integer :: a1
         end subroutine fortran_caller
     end interface 
